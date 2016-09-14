@@ -1,0 +1,12 @@
+package juego;
+
+import grafica.ObjetoGrafico;
+
+public class Base extends ObjetoJuego {
+
+	protected Base(int x, int y) {
+		super(x, y);
+		// TODO Auto-generated constructor stub
+	}
+
+}

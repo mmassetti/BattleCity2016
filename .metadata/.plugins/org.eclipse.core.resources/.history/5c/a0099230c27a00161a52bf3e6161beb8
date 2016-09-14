@@ -1,0 +1,5 @@
+package juego;
+
+public class Basico extends Enemigo {
+
+}

@@ -1,0 +1,13 @@
+package juego;
+
+import grafica.AceroGrafico;
+
+public class Acero extends Obstaculo {
+
+	public Acero(int x, int y) {
+		atraviesaTanque=false;
+		atraviesaBala=false;
+		esDestructiblesw AceroGrafico(x,y);
+	}
+
+}

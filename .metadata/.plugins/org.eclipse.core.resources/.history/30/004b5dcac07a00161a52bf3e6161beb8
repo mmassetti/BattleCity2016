@@ -1,0 +1,11 @@
+package juego;
+
+public class Enemigo extends Tanque {
+
+	@Override
+	public void morir() {
+		// TODO Auto-generated method stub
+		
+	}
+
+}

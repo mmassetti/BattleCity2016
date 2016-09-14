@@ -1,0 +1,22 @@
+package Juego;
+
+public class Mapa {
+	//Atributos
+	protected Enemigo[] miEnemigo;
+	protected Obstaculo[] miObstaculo;
+	protected PowerUp[] miPoder;
+	protected Jugador miJugador;
+	protected int cantEnemigos;
+	
+	//Constructor
+	public Mapa() {
+		
+	}
+	
+	//Metodos
+	public void finJuego() {
+		
+	}
+	
+	
+}

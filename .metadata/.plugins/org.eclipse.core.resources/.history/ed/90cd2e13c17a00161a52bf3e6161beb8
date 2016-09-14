@@ -1,0 +1,10 @@
+package juego;
+
+public class PowerUp {
+
+	
+	//Metodos
+	public void afectarJugador() {
+		
+	}
+}

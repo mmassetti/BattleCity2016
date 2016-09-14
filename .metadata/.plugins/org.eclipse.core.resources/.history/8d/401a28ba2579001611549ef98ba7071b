@@ -1,0 +1,53 @@
+package juego;
+
+import java.awt.event.KeyEvent;
+import java.util.Random;
+import grafica.*;
+
+public class Mapa {
+	//Atributos
+	protected Enemigo[] miEnemigo;
+	protected Obstaculo[] miObstaculo;
+	protected PowerUp[] miPoder;
+	protected Jugador miJugador;
+	protected int cantEnemigos;
+	
+	//Constructor
+	public Mapa(Gui gui) {
+			miJugador = new Jugador(15,15,10,10,10,10);
+			gui.add(miJugador.getGrafico());
+	}
+	//Metodos
+	public Jugador getMiJugador() {
+		return miJugador;
+	}
+
+	public void setMiJugador(Jugador miJugador) {
+		this.miJugador = miJugador;
+	}
+
+	public void mover(int dir){		
+		int direccion = 0;
+		
+		switch (dir){
+			case KeyEvent.VK_UP : //Arriba
+				direccion = 0;
+				break;
+			case KeyEvent.VK_DOWN : //Abajo
+				direccion = 1;
+				break;
+			case KeyEvent.VK_LEFT : //Izquierda
+				direccion = 2;
+				break;
+			case KeyEvent.VK_RIGHT : //Derecha
+				direccion = 3;
+				break;
+		}
+		
+		miJugador.mover(direccion);
+	}
+
+	public void finJuego() {
+		
+	}
+}

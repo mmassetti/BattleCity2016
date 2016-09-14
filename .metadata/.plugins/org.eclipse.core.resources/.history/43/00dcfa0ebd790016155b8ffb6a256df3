@@ -1,0 +1,11 @@
+package juego;
+import grafica.*;
+
+public class Logica {
+
+		public Logica () {
+		Ventana gui= new Ventana();
+		Mapa map= new Mapa(gui);
+		
+	}
+}

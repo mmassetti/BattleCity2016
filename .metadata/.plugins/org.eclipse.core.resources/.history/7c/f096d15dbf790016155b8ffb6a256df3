@@ -1,0 +1,10 @@
+package juego;
+
+public abstract class ObjetoJuego {
+	//Atributos
+	protected ObjetoGrafico miGrafico;
+	
+	protected ObjetoJuego {
+		
+	}
+}
