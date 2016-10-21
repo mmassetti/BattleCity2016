@@ -1,0 +1,16 @@
+
+
+jugador se mueve en diagonal
+mover y disparar a la vez
+///////////////////////////////////////////////
+como matar al jugador (destruir el objeto)
+modificar cuando se gana (el juego termina cuando el jugador muere)
+como y donde crear los powerups (en el hilo ?)
+ /////////////////////////////////////
+ cosas para hacer:
+ -arreglar el repaint
+ -visitadores  concretos de los obstaculos
+ -controlador tiempo de power ups
+ -implementar los niveles
+ -hacer singleton con jugador
+ 

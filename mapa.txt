@@ -1,0 +1,30 @@
+           LLLLL         LLLLL
+LLLLLL  L  LWWWL  LLLL   LLLLL
+LWTTWL  L  LLLLL  LLLL   LLLLL
+LWTTWL  L  LWWWL  LLLL        
+LWTTWL     LLLLL         AAAAA
+LWTTWL                   AWWWA
+LWTTWL                   AWWWA
+LWTTWL                   AWWWA
+LWTTWL                   AWWWA
+LWTTWL                   AWWWA
+LWTTWL                   AWWWA
+LWTTWL                   AWWWA
+LWTTWL                   AWWWA
+LWTTWL                   AWWWA
+LWTTWL                   AAAAA
+LWTTWL     LLLLL              
+LWTTWL  L  LWWWL    LL  LLLLLL
+LWTTWL  L  LLLLL    LL  LTTTTL
+LLLLLL  L  LWWWL    LL  LTTTTL
+           LLLLL        LLLLLL
+LLLLLL                        
+LL  LL     TALW          AAAAA
+LL  LL                   AWWWA
+LL  LL                   AWWWA
+LL  LL                   AWWWA
+LL  LL                   AWWWA
+LL  LL                   AWWWA
+LL  LL                   AWWWA
+LL  LL                   AWWWA
+LLLLLL                   AAAAA

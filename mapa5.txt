@@ -1,0 +1,11 @@
+LLLLL          LLLLL
+LWWWL          LWWWL
+LLLLL          LLLLL
+                    
+AAAAA  LLTTLL  AAAAA
+AWWWA  LLTTLL  AWWWA
+AAAAA  LLTTLL  AAAAA
+                    
+A                  A
+A       AAA        A
+AAAAAAAAABAAAAAAAAAA
