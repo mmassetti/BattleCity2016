@@ -1,33 +1,28 @@
 package juego;
 
 import java.io.BufferedReader;
-import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 
-import TDALista.PositionList;
-import grafica.Ventana;
 import obstaculos.*;
 
 public class ManejadorArchivo {
-	
-	public ManejadorArchivo(){}
-	
-	public void cargarMapa(PositionList<Obstaculo> misObstaculos,Ventana gui,int posX,int posY,int pixelesAncho,int pixelesAlto) {
-		BufferedReader br = null;
+	private String fileName;
 
-		String fileName = "mapa5.txt";
+	public ManejadorArchivo() {
+	}
+
+	public void cargarMapa(Juego juego, int posX, int posY, int nroMapa) {
+		BufferedReader br = null;
+		fileName = "/mapa" + nroMapa + ".txt";
+		
 
 		try {
-			/*Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-			double width = screenSize.getWidth();
-			double height = screenSize.getHeight();
-			int pixelesAncho = (int) (width / 30);
-			int pixelesAlto = (int) (height / 30);*/
-			int width= 64*20;
-			int height= 64*11;		
+			int width = 64 * 20;
 			String sCurrentLine;
-
-			br = new BufferedReader(new FileReader(fileName));
+			InputStream in = getClass().getResourceAsStream(fileName); 
+			br = new BufferedReader(new InputStreamReader(in));
 
 			// Para cada linea del archivo
 			while ((sCurrentLine = br.readLine()) != null) {
@@ -37,63 +32,64 @@ public class ManejadorArchivo {
 					switch (letra) {
 					case 'L': {
 						Obstaculo l = new Ladrillo(posX, posY);
-						misObstaculos.addLast(l);
-						gui.add(l.getLabel());
-						posX = posX + pixelesAncho;
+						juego.getMisObstaculos().addLast(l);
+						juego.getGui().add(l.getLabel());
+						posX = posX + juego.getAnchoPixel();
 						if (posX == width) {
-							posY = posY + pixelesAlto;
+							posY = posY + juego.getAltoPixel();
 							posX = 0;
 						}
 						break;
 					}
 					case 'A': {
 						Obstaculo a = new Acero(posX, posY);
-						misObstaculos.addLast(a);
-						gui.add(a.getLabel());
-						posX = posX + pixelesAncho;
+						juego.getMisObstaculos().addLast(a);
+						juego.getGui().add(a.getLabel());
+						posX = posX + juego.getAnchoPixel();
 						if (posX == width) {
-							posY = posY + pixelesAlto;
+							posY = posY + juego.getAltoPixel();
 							posX = 0;
 						}
 						break;
 					}
 					case 'W': {
 						Obstaculo w = new Agua(posX, posY);
-						misObstaculos.addLast(w);
-						gui.add(w.getLabel());
-						posX = posX + pixelesAncho;
+						juego.getMisObstaculos().addLast(w);
+						juego.getGui().add(w.getLabel());
+						posX = posX + juego.getAnchoPixel();
 						if (posX == width) {
-							posY = posY + pixelesAlto;
+							posY = posY + juego.getAltoPixel();
 							posX = 0;
 						}
 						break;
 					}
 					case 'T': {
 						Obstaculo t = new Arbol(posX, posY);
-						misObstaculos.addLast(t);
-						gui.add(t.getLabel());
-						posX = posX + pixelesAncho;
+						juego.getMisObstaculos().addLast(t);
+						juego.getGui().add(t.getLabel());
+						posX = posX + juego.getAnchoPixel();
 						if (posX == width) {
-							posY = posY + pixelesAlto;
+							posY = posY + juego.getAltoPixel();
 							posX = 0;
 						}
 						break;
 					}
 					case 'B': {
-						Obstaculo t = new Base(posX, posY);
-						misObstaculos.addLast(t);
-						gui.add(t.getLabel());
-						posX = posX + pixelesAncho;
+						Obstaculo t = new Base(posX, posY, juego.getTerminador());
+						juego.setBase((Base) t);
+						juego.getMisObstaculos().addLast(t);
+						juego.getGui().add(t.getLabel());
+						posX = posX + juego.getAnchoPixel();
 						if (posX == width) {
-							posY = posY + pixelesAlto;
+							posY = posY + juego.getAltoPixel();
 							posX = 0;
 						}
 						break;
 					}
 					default: {
-						posX = posX + pixelesAncho;
+						posX = posX + juego.getAnchoPixel();
 						if (posX == width) {
-							posY = posY + pixelesAlto;
+							posY = posY + juego.getAltoPixel();
 							posX = 0;
 						}
 						break;

@@ -1,126 +1,128 @@
 package grafica;
 
-import juego.*;
-
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Container;
-import java.awt.Dimension;
 import java.awt.EventQueue;
-import java.awt.Graphics;
-import java.awt.GridLayout;
-import java.awt.Toolkit;
-
-import javax.imageio.ImageIO;
-import javax.swing.BoxLayout;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JRootPane;
+import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.border.EmptyBorder;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
-import java.awt.image.BufferedImage;
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
-import java.net.URISyntaxException;
+import java.awt.Color;
+import javax.swing.GroupLayout;
+import javax.swing.GroupLayout.Alignment;
+import javax.swing.border.LineBorder;
+import juego.Juego;
+import juego.Jugador;
 
 public class Ventana extends JFrame {
+
+	//Atributos
 	private static final long serialVersionUID = 1L;
-	//private Container contentPane = getContentPane();
+	private JPanel contentPane;
 	private PanelJuego panelJuego;
-	//private JPanel panelMenu;
-	private BufferedImage img;
+	protected PanelInfo panelInfo;
 	private Juego map;
-	private final int width= 64*20; 
-	private final int height= 64*11;
-	
-	
-	
+	private static volatile int nroNivel = 1;
+	private static volatile int nroMapa = 1;
+
+	//Main
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					new Ventana();
-
+					Ventana frame = new Ventana(nroMapa,nroNivel);
+					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
 			}
 		});
 	}
+
+	//Constructores
+	public Ventana(int nMapa,int nNivel) {
+		setearPropiedades();
+		crearPaneles(nMapa);
+		setearVentana();
+		crearJuego(nMapa, nNivel);
+	}
 	
-	private class PanelJuego extends JPanel{
-		protected void paintComponent(Graphics g){
-			super.paintComponent(g);
-			g.drawImage(img, 0, 0, width, height, this);
-		}
+	public Ventana(int nNivel,int nMapa, Jugador j,String nombreJugador){
+		setearPropiedades();
+		crearPaneles(nMapa);
+		setearVentana();
+		crearJuego(nMapa, nNivel,j,nombreJugador);
 	}
 
-	public Ventana() {
-		addKeyListener(new KeyAdapter() {
-			@Override
-			public void keyPressed(KeyEvent arg0) {
-				moverJugador(arg0);
-			}
-		});
-		addKeyListener(new KeyAdapter() {
-			@Override
-			public void keyReleased(KeyEvent arg0) {
-				disparo(arg0);
-			}
-		});
-		addKeyListener(new KeyAdapter() {
-			@Override
-			public void keyPressed(KeyEvent arg0) {
-				if (arg0.getKeyCode()== KeyEvent.VK_ESCAPE) { //Para salir del juego (por ahora)
-					System.exit(0);
-				}
-					
-			}
-		});
-		
-		try {
-			img = ImageIO.read(new File(getClass().getResource("/Fuentes1/Background/fondo.png").toURI()));
-		} catch (IOException | URISyntaxException e) {
-			e.printStackTrace(); 
-		}
-		
-		
-		setTitle("Battle City 2016");		
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setUndecorated(true);
-		getRootPane().setWindowDecorationStyle(JRootPane.NONE);
-		setBounds(50,50,width,height);
-		
-
-		panelJuego = new PanelJuego();
-		panelJuego.setBorder(new EmptyBorder(1,1,1,1));		
-		panelJuego.setLayout(null);
-		setContentPane(panelJuego);
+	//Seteo de las propiedades del frame
+	private void setearPropiedades() {
 		setResizable(false);
-		setVisible(true);
-		
-		/*contentPane.setLayout(new GridLayout(1,2));
-		panelMenu = new JPanel();
-		panelMenu.setBorder(new EmptyBorder(1,1,1,1));		
-		panelMenu.setLayout(null);			
-		contentPane.add(panelJuego);
-		contentPane.add(panelMenu);*/
-		
-		map = new Juego(this);
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setBounds(0, 0, 1373, 704);
+		contentPane = new JPanel();
+		contentPane.setBackground(Color.BLACK);
+		contentPane.setBorder(new LineBorder(new Color(0, 0, 0)));
+		getRootPane().setWindowDecorationStyle(JRootPane.NONE);
+		setUndecorated(true);
+		contentPane.setBorder(new EmptyBorder(1, 1, 1, 1));
+		setContentPane(contentPane);
 	}
 
-	protected void moverJugador(KeyEvent key) {
-		map.moverJugador(key.getKeyCode());
+	//Creacion de los paneles
+	private void crearPaneles(int nMapa) {
+		panelJuego = new PanelJuego(this);
+		panelJuego.addKeyListener(panelJuego);
+		panelJuego.setFocusable(true);
+		panelJuego.setBackground(Color.BLACK);
+		panelInfo = new PanelInfo(panelJuego, this, nMapa);
+		panelInfo.setFocusable(true);
+	}
+
+	//Ajustes del frame
+	private void setearVentana() {
+		GroupLayout gl_contentPane = new GroupLayout(contentPane);
+		gl_contentPane.setHorizontalGroup(gl_contentPane.createParallelGroup(Alignment.TRAILING)
+				.addGroup(gl_contentPane.createSequentialGroup()
+						.addComponent(panelJuego, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
+								GroupLayout.PREFERRED_SIZE)
+						.addPreferredGap(ComponentPlacement.RELATED, 1181, Short.MAX_VALUE)
+						.addComponent(panelInfo, GroupLayout.PREFERRED_SIZE, 86, GroupLayout.PREFERRED_SIZE)));
+		gl_contentPane.setVerticalGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
+				.addComponent(panelInfo, GroupLayout.DEFAULT_SIZE, 702, Short.MAX_VALUE)
+				.addComponent(panelJuego, GroupLayout.DEFAULT_SIZE, 702, Short.MAX_VALUE));
+
+		contentPane.setLayout(gl_contentPane);
 	}
 	
-	protected void disparo(KeyEvent key) {
-		map.generarDisparo(key.getKeyCode());
+	//Se crea el juego
+	private void crearJuego(int nMapa, int nNivel) {
+		map = new Juego(this, panelJuego, panelInfo, nMapa, nNivel);
+		panelJuego.setJuego(map);
+		panelJuego.setPanelInfo(panelInfo);
 	}
 	
-	public synchronized void repintar(){
-		this.repaint();
+	private void crearJuego(int nMapa, int nNivel, Jugador j,String nombreJugador) {
+		panelJuego.setPediNombreJugador(true);
+		map = new Juego(this, panelJuego, panelInfo, nMapa, nNivel,j);
+		map.setNombreJugador(nombreJugador);
+		panelJuego.setJuego(map);
+		panelJuego.setPanelInfo(panelInfo);
+		
+	}
+
+	
+	//Metodos auxiliares
+
+	//Reinicia el juego
+	public void reiniciar(int nMapa) {
+		this.dispose();
+		Ventana frame = new Ventana(nMapa,nroNivel);
+		frame.setVisible(true);
+	}
+
+	//Cambia de nivel
+	public void cambiarNivel(int nNivel, int nMapa, Jugador j,String nombreJugador) {
+		this.dispose();
+		Ventana frame = new Ventana(nNivel, nMapa,j,nombreJugador);
+		frame.setVisible(true);
 	}
 }

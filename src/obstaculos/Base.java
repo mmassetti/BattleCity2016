@@ -1,24 +1,27 @@
 package obstaculos;
 
 import grafica.BaseGrafica;
-import grafica.LadrilloGrafico;
-import juego.Visitor;
+import juego.TerminadorJuego;
+import visitadores.VisitadorConcretoBase;
+import visitadores.VisitorObstaculos;
 
 public class Base extends Obstaculo {
 
-	public Base(int x, int y) {
-		atraviesaTanque=false;
-		atraviesaBala=false;
-		esDestructible=true;
-		miGrafico = new BaseGrafica(x,y);
+	protected VisitadorConcretoBase miVisitador;
+
+	public Base(int x, int y, TerminadorJuego t) {
+		resistencia = 1;
+		miVisitador = new VisitadorConcretoBase(this, t);
+		atraviesaBala = false;
+		miGrafico = new BaseGrafica(x, y);
 	}
 
-	@Override
-	public boolean accept(Visitor visitor) {
-		// TODO Auto-generated method stub
-		return false;
+	public VisitorObstaculos getVisitor() {
+		return miVisitador;
 	}
 
-	
-
+	public int recibirDisparo() {
+		resistencia--;
+		return resistencia;
+	}
 }

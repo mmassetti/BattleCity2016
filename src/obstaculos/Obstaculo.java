@@ -1,11 +1,17 @@
 package obstaculos;
 
 import juego.ObjetoJuego;
-import juego.Visitor;
+import visitadores.Visitor;
+import visitadores.VisitorObstaculos;
 
 public abstract class Obstaculo extends ObjetoJuego {
-	public boolean accept(Visitor visitor){
+	protected int resistencia;
+
+	public boolean accept(Visitor visitor) {
 		return visitor.visit(this);
 	}
-}
 
+	public abstract VisitorObstaculos getVisitor();
+
+	public abstract int recibirDisparo();
+}

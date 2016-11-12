@@ -1,17 +1,30 @@
 package grafica;
 
+import java.net.URL;
+
 import javax.swing.ImageIcon;
 
-public class BasicoGrafico extends EnemigoGrafico{
+public class BasicoGrafico extends EnemigoGrafico {
 
 	public BasicoGrafico(int x, int y) {
 		super(x, y);
-		this.image[0] = new ImageIcon(this.getClass().getResource("/Fuentes1/Basico/up.png"));
-		this.image[1] = new ImageIcon(this.getClass().getResource("/Fuentes1/Basico/down.png"));
-		this.image[2] = new ImageIcon(this.getClass().getResource("/Fuentes1/Basico/left.png"));
-		this.image[3] = new ImageIcon(this.getClass().getResource("/Fuentes1/Basico/right.png"));
+		URL url = BasicoGrafico.class.getResource("/fuentes/Basico/up.png");
+		ImageIcon icono = new ImageIcon(url);
+		this.image[0] = icono;
+		
+		url = BasicoGrafico.class.getResource("/fuentes/Basico/down.png");
+		icono = new ImageIcon(url);
+		this.image[1] = icono;
+		
+		url = BasicoGrafico.class.getResource("/fuentes/Basico/left.png");
+		icono = new ImageIcon(url);
+		this.image[2] = icono;
+		
+		url = BasicoGrafico.class.getResource("/fuentes/Basico/right.png");
+		icono = new ImageIcon(url);
+		this.image[3] = icono;
 	}
-	
+
 	public void cambiarGrafico(int dir) {
 		if (this.grafico != null) {
 			this.grafico.setIcon(this.image[dir]);

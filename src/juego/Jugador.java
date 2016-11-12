@@ -1,41 +1,51 @@
 package juego;
 
 import grafica.JugadorGrafico;
-import niveles.Nivel;
-
+import niveles.*;
+import visitadores.VisitadorConcretoJugador;
+import visitadores.Visitor;
 import java.awt.Rectangle;
-import java.awt.event.KeyEvent;
-import java.util.Iterator;
-import TDALista.*;
+import TDALista.ListaDoblementeEnlazada;
+import audio.ReproductorSonido;
 
 public class Jugador extends Tanque {
 
-	/* Crear clase Nivel abstracta y extender con los cuatro niveles */
-
 	// Atributos
 	protected int vidas;
+	protected final int maxVidas = 5;
 	protected int cantPuntos;
 	protected Nivel nivel;
+	protected int numeroNivel;
 	protected TerminadorJuego miTerminador;
+	protected VisitadorConcretoJugador miVisitador;
+	protected boolean tieneCasco;
+	protected Manager managerDisparo;
+	protected ReproductorSonido miReproductorSonido;
+	protected int contadorPuntos;
 
 	// Constructor
-	public Jugador(int x, int y, TerminadorJuego terminador) {
-		super(1, 10, 10, 10);
-		vidas = 0;
+	public Jugador(int x, int y, TerminadorJuego terminador, Manager manager) {
+		tieneCasco = false;
+		nivel = new Nivel1();
+		numeroNivel = 1;
+		vidas = 1;
 		cantPuntos = 0;
-		miGrafico = new JugadorGrafico(x, y);
 		direccionActual = 0;
-		miRectangulo= new Rectangle(miGrafico.getPos().x,miGrafico.getPos().y,55,55);
 		miTerminador = terminador;
-		// nivel = new Nivel1() ??;
-		// nivel= n;
+		actualizarAtributos();
+		miGrafico = new JugadorGrafico(x, y);
+		miVisitador = new VisitadorConcretoJugador(this);
+		miRectangulo = new Rectangle(miGrafico.getPos().x, miGrafico.getPos().y, 55, 55);
+		miReproductorSonido = new ReproductorSonido();
+		managerDisparo = manager;
+		disparosActuales = new ListaDoblementeEnlazada<Disparo>();
+		contadorPuntos = 1;
 	}
 
 	public boolean accept(Visitor visitor) {
 		return visitor.visit(this);
 	}
 
-	// Getters
 	public int getVidas() {
 		return vidas;
 	}
@@ -44,34 +54,120 @@ public class Jugador extends Tanque {
 		return nivel;
 	}
 
+	public int getNumeroNivel() {
+		return numeroNivel;
+	}
+
 	public int getCantPuntos() {
 		return cantPuntos;
 	}
 
-	// Setters
-	public void aumentarVida() {
-		this.vidas++;
+	public VisitadorConcretoJugador getVisitador() {
+		return miVisitador;
 	}
 
-	public void setCantPuntos(int cantPuntos) {
-		this.cantPuntos = cantPuntos;
+	public boolean getTieneCasco() {
+		return tieneCasco;
+	}
+
+	public int getResistenciaGolpes() {
+		return resistenciaGolpes;
+	}
+
+	public void setResistenciaGolpes(int n) {
+		resistenciaGolpes = n;
+	}
+
+	public void setTieneCasco(boolean tieneCasco) {
+		this.tieneCasco = tieneCasco;
+	}
+
+	public void setPuntos(int n) {
+		cantPuntos = n;
+	}
+
+	public void setVidas(int n) {
+		vidas = n;
 	}
 
 	public void setNivel(Nivel nivel) {
 		this.nivel = nivel;
+		actualizarAtributos();
 	}
 
-	public void setDireccionActual(int n) {
-		direccionActual = n;
+	public void actualizarEnemigosMuertos() {
+		managerDisparo.aumentarCantMuertos();
 	}
-	
-	public Disparo disparar(){
-		return new DisparoJugador(miGrafico.getPos().x, miGrafico.getPos().y, direccionActual);
-	}
-	
 
-	// Metodos
+	public void aumentarVida() {
+		if (vidas < maxVidas)
+			this.vidas++;
+	}
+
+	public void aumentarPuntos(int n) {
+		this.cantPuntos += n;
+		int puntosParaSubirDeNivel = 20000 * contadorPuntos;
+		if (cantPuntos > puntosParaSubirDeNivel) {
+			aumentarVida();
+			contadorPuntos++;
+		}
+	}
+
+	public void subirNivel() {
+		if (numeroNivel != 4) {
+			numeroNivel++;
+			switch (numeroNivel) {
+			case 2:
+				setNivel(new Nivel2());
+				break;
+			case 3:
+				setNivel(new Nivel3());
+				break;
+			case 4:
+				setNivel(new Nivel4());
+				break;
+			}
+			actualizarAtributos();
+		}
+	}
+
+	public void recibirDisparo() {
+		resistenciaGolpes--;
+		if (resistenciaGolpes == 0) {
+			vidas--;
+			this.getLabel().setLocation(435, 635);
+			miGrafico.getPos().setLocation(435, 635);
+			this.setRectangulo(new Rectangle(miGrafico.getPos().x, miGrafico.getPos().y, 55, 55));
+			if (vidas == 0)
+				morir();
+			else {
+				setNivel(new Nivel1());
+				actualizarAtributos();
+			}
+		}
+	}
+
+	private void actualizarAtributos() {
+		resistenciaGolpes = nivel.getGolpesResistencia();
+		velocidadMovimiento = nivel.getVelocidadMovimiento();
+		velocidadDisparo = nivel.getVelocidadDisparo();
+		disparoSimultaneo = nivel.getDisparoSimultaneo();
+		numeroNivel = nivel.getNumeroNivel();
+	}
+
+	public void disparar() {
+		if (disparosActuales.size() < disparoSimultaneo) {
+			miReproductorSonido.reproducir("laser");
+			DisparoJugador d = new DisparoJugador(miGrafico.getPos().x, miGrafico.getPos().y, direccionActual,
+					velocidadDisparo);
+			disparosActuales.addLast(d);
+			d.cambiarDireccion(direccionActual);
+			managerDisparo.generarDisparo(d);
+		}
+	}
+
 	public void morir() {
 		miTerminador.terminarJuego();
 	}
+
 }

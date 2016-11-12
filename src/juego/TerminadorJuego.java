@@ -1,14 +1,14 @@
 package juego;
 
 public class TerminadorJuego {
-	
+
 	protected Juego miJuego;
-	
-	public TerminadorJuego(Juego juego){
+
+	public TerminadorJuego(Juego juego) {
 		miJuego = juego;
 	}
-	
-	public void terminarJuego(){
-		miJuego.finJuego();
+
+	public void terminarJuego() {
+		miJuego.finJuegoLogica();
 	}
 }

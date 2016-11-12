@@ -3,13 +3,14 @@ package enemigos;
 import java.awt.Rectangle;
 
 import grafica.RapidoGrafico;
+import juego.Manager;
 
 public class Rapido extends Enemigo {
 
-	public Rapido(int x, int y) {
-		super(1,20,10,10);
-		miGrafico= new RapidoGrafico(x,y);
-		miInteligencia= new IABasica();
-		miRectangulo= new Rectangle(miGrafico.getPos().x,miGrafico.getPos().y,55,55);
+	public Rapido(int x, int y, Manager m) {
+		super(1, 7, 10, m);
+		puntos = 200;
+		miGrafico = new RapidoGrafico(x, y);
+		miRectangulo = new Rectangle(miGrafico.getPos().x, miGrafico.getPos().y, 60, 60);
 	}
 }

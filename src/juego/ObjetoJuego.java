@@ -3,47 +3,37 @@ package juego;
 import javax.swing.JLabel;
 import java.awt.Rectangle;
 import grafica.ObjetoGrafico;
+import visitadores.Visitor;
 
 public abstract class ObjetoJuego {
 	// Atributos
 	protected ObjetoGrafico miGrafico;
-	protected boolean atraviesaTanque;
 	protected boolean atraviesaBala;
-	protected boolean esDestructible;
-
-
-	/*public ObjetoJuego(int x, int y) {
-		miGrafico = new ObjetoGrafico(x, y);
-	}*/
+	protected Rectangle miRectangulo;
 
 	public abstract boolean accept(Visitor visitor);
-	
+
 	public JLabel getLabel() {
 		return miGrafico.getGrafico();
 	}
-	
-	public ObjetoGrafico getMiGrafico(){
-		return miGrafico;
+
+	public Rectangle getMiRectangulo() {
+		return miRectangulo;
 	}
-	
-	public boolean getAtraviesaTanque() {
-		return atraviesaTanque;
+
+	public ObjetoGrafico getMiGrafico() {
+		return miGrafico;
 	}
 
 	public boolean getAtraviesaBala() {
 		return atraviesaBala;
 	}
 
-	public boolean getEsDestructible() {
-		return esDestructible;
+	public Rectangle getBounds() {
+		return new Rectangle(miGrafico.getPos().x, miGrafico.getPos().y, miGrafico.getAnchoPixel(), miGrafico.getAltoPixel());
 	}
-	
-	public Rectangle getBounds(){
-		return new Rectangle(miGrafico.getPos().x,miGrafico.getPos().y,miGrafico.getAnchoPixel(),miGrafico.getAltoPixel()); 
+
+	public void setRectangulo(Rectangle r) {
+		miRectangulo = r;
 	}
-	
-	public boolean colision(ObjetoJuego obj){
-		return this.getBounds().intersects(obj.getBounds());
-	}
-	
 }
